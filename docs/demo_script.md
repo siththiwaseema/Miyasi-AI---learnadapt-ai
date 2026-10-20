@@ -4,6 +4,8 @@ All IDs and numbers below come from the running app (after `python src/train.py`
 Before the demo, open **Student → Topics to practise next** once: on a fresh deployment the first
 load downloads the quiz data ("Loading quiz data, this takes about a minute the first time…").
 
+The recommendations are based on learners' previous performance and activity, and are intended to guide practice rather than label learners. 
+
 ## 0:00–0:30 · Home
 - "Learners move at different speeds, but courses give everyone the same sequence. LearnAdapt AI
   shows each learner what they're good at, what to grow next and what to practise — always with a
