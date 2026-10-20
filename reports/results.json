@@ -1,0 +1,450 @@
+{
+  "module_a": {
+    "rows": 1000,
+    "train_rows": 800,
+    "test_rows": 200,
+    "test_ids": [
+      "STU712",
+      "STU935",
+      "STU750",
+      "STU241",
+      "STU326",
+      "STU721",
+      "STU413",
+      "STU701",
+      "STU403",
+      "STU676",
+      "STU450",
+      "STU010",
+      "STU789",
+      "STU855",
+      "STU215",
+      "STU381",
+      "STU383",
+      "STU937",
+      "STU710",
+      "STU418",
+      "STU228",
+      "STU967",
+      "STU641",
+      "STU191",
+      "STU151",
+      "STU756",
+      "STU784",
+      "STU767",
+      "STU833",
+      "STU156",
+      "STU616",
+      "STU397",
+      "STU558",
+      "STU989",
+      "STU391",
+      "STU961",
+      "STU805",
+      "STU811",
+      "STU545",
+      "STU163",
+      "STU692",
+      "STU726",
+      "STU342",
+      "STU433",
+      "STU417",
+      "STU996",
+      "STU796",
+      "STU449",
+      "STU175",
+      "STU032",
+      "STU650",
+      "STU452",
+      "STU335",
+      "STU114",
+      "STU003",
+      "STU476",
+      "STU380",
+      "STU868",
+      "STU470",
+      "STU432",
+      "STU635",
+      "STU477",
+      "STU740",
+      "STU816",
+      "STU567",
+      "STU527",
+      "STU209",
+      "STU854",
+      "STU752",
+      "STU499",
+      "STU353",
+      "STU437",
+      "STU387",
+      "STU360",
+      "STU453",
+      "STU535",
+      "STU835",
+      "STU144",
+      "STU647",
+      "STU619",
+      "STU907",
+      "STU305",
+      "STU617",
+      "STU908",
+      "STU410",
+      "STU411",
+      "STU214",
+      "STU213",
+      "STU972",
+      "STU528",
+      "STU306",
+      "STU923",
+      "STU817",
+      "STU757",
+      "STU852",
+      "STU595",
+      "STU658",
+      "STU167",
+      "STU239",
+      "STU230",
+      "STU303",
+      "STU041",
+      "STU827",
+      "STU516",
+      "STU828",
+      "STU997",
+      "STU471",
+      "STU954",
+      "STU425",
+      "STU580",
+      "STU036",
+      "STU358",
+      "STU599",
+      "STU627",
+      "STU354",
+      "STU887",
+      "STU423",
+      "STU572",
+      "STU981",
+      "STU377",
+      "STU604",
+      "STU286",
+      "STU343",
+      "STU742",
+      "STU226",
+      "STU922",
+      "STU253",
+      "STU846",
+      "STU644",
+      "STU538",
+      "STU112",
+      "STU945",
+      "STU518",
+      "STU800",
+      "STU269",
+      "STU023",
+      "STU011",
+      "STU766",
+      "STU891",
+      "STU925",
+      "STU633",
+      "STU970",
+      "STU918",
+      "STU479",
+      "STU008",
+      "STU560",
+      "STU484",
+      "STU302",
+      "STU515",
+      "STU401",
+      "STU364",
+      "STU334",
+      "STU964",
+      "STU245",
+      "STU174",
+      "STU665",
+      "STU347",
+      "STU075",
+      "STU180",
+      "STU995",
+      "STU543",
+      "STU669",
+      "STU743",
+      "STU602",
+      "STU921",
+      "STU252",
+      "STU906",
+      "STU497",
+      "STU182",
+      "STU195",
+      "STU723",
+      "STU702",
+      "STU864",
+      "STU625",
+      "STU267",
+      "STU563",
+      "STU146",
+      "STU186",
+      "STU485",
+      "STU301",
+      "STU126",
+      "STU664",
+      "STU645",
+      "STU221",
+      "STU821",
+      "STU587",
+      "STU294",
+      "STU532",
+      "STU638",
+      "STU959",
+      "STU454",
+      "STU366",
+      "STU292",
+      "STU751",
+      "STU446",
+      "STU073",
+      "STU078",
+      "STU081",
+      "STU148",
+      "STU045"
+    ],
+    "a1": [
+      {
+        "model": "Dummy (most frequent)",
+        "accuracy": 0.265,
+        "macro_precision": 0.06625,
+        "macro_recall": 0.25,
+        "macro_f1": 0.10474308300395258,
+        "cv_macro_f1_mean": 0.10474076964346682,
+        "cv_macro_f1_std": 0.0009557585691003964
+      },
+      {
+        "model": "Dummy (stratified)",
+        "accuracy": 0.215,
+        "macro_precision": 0.21473013493253373,
+        "macro_recall": 0.21451224407868325,
+        "macro_f1": 0.21440533275210694,
+        "cv_macro_f1_mean": 0.22717792124933936,
+        "cv_macro_f1_std": 0.02554171931168108
+      },
+      {
+        "model": "Logistic Regression",
+        "accuracy": 0.21,
+        "macro_precision": 0.21674629581606325,
+        "macro_recall": 0.2094761140104376,
+        "macro_f1": 0.2108529068798934,
+        "cv_macro_f1_mean": 0.2294323139430959,
+        "cv_macro_f1_std": 0.028748806337862046
+      },
+      {
+        "model": "Random Forest",
+        "accuracy": 0.265,
+        "macro_precision": 0.2668407406744647,
+        "macro_recall": 0.26430148534725006,
+        "macro_f1": 0.26495650722454844,
+        "cv_macro_f1_mean": 0.22828623472006257,
+        "cv_macro_f1_std": 0.024069429471579393
+      }
+    ],
+    "a1_confusion": {
+      "Dummy (most frequent)": [
+        [
+          0,
+          0,
+          0,
+          50
+        ],
+        [
+          0,
+          0,
+          0,
+          47
+        ],
+        [
+          0,
+          0,
+          0,
+          50
+        ],
+        [
+          0,
+          0,
+          0,
+          53
+        ]
+      ],
+      "Dummy (stratified)": [
+        [
+          10,
+          10,
+          12,
+          18
+        ],
+        [
+          11,
+          10,
+          12,
+          14
+        ],
+        [
+          14,
+          13,
+          10,
+          13
+        ],
+        [
+          11,
+          13,
+          16,
+          13
+        ]
+      ],
+      "Logistic Regression": [
+        [
+          10,
+          10,
+          16,
+          14
+        ],
+        [
+          7,
+          9,
+          17,
+          14
+        ],
+        [
+          9,
+          15,
+          11,
+          15
+        ],
+        [
+          11,
+          9,
+          21,
+          12
+        ]
+      ],
+      "Random Forest": [
+        [
+          13,
+          11,
+          11,
+          15
+        ],
+        [
+          10,
+          12,
+          11,
+          14
+        ],
+        [
+          16,
+          9,
+          12,
+          13
+        ],
+        [
+          8,
+          9,
+          20,
+          16
+        ]
+      ]
+    },
+    "a1_labels": [
+      "Fail",
+      "Fair",
+      "Good",
+      "Excellent"
+    ],
+    "a2": [
+      {
+        "model": "Dummy (mean)",
+        "MAE": 10.43255,
+        "RMSE": 12.050937982165538,
+        "R2": -0.001089194241836955,
+        "cv_R2_mean": -0.0034315556106656155,
+        "cv_R2_std": 0.00405392854288166
+      },
+      {
+        "model": "Ridge",
+        "MAE": 10.536798031601334,
+        "RMSE": 12.166373547404202,
+        "R2": -0.020359856197419646,
+        "cv_R2_mean": -0.04515429652367113,
+        "cv_R2_std": 0.029885039931912508
+      },
+      {
+        "model": "Random Forest",
+        "MAE": 10.795966666666668,
+        "RMSE": 12.494954146018749,
+        "R2": -0.07621837833051814,
+        "cv_R2_mean": -0.027092972884382106,
+        "cv_R2_std": 0.016854450536236614
+      }
+    ],
+    "a2_best": "Ridge",
+    "path_reliable": false,
+    "paths": [
+      "M1\u2192M2\u2192M4",
+      "M1\u2192M3\u2192M5"
+    ]
+  },
+  "module_b": {
+    "available": true,
+    "cleaning": {
+      "raw_rows": 346860,
+      "raw_users": 4217,
+      "dropped_no_skill": 72270,
+      "dropped_scaffolding": 23185,
+      "dropped_rare_skills": 2813,
+      "dropped_short_learners": 18365,
+      "rows": 230227,
+      "users": 2021,
+      "skills": 75
+    },
+    "train_users": 1515,
+    "test_users": 506,
+    "test_users_with_weak": 321,
+    "test_weak_spots": 599,
+    "test_weak_unseen_in_history": 248,
+    "classifier": {
+      "precision": 0.5652173913043478,
+      "recall": 0.7037037037037037,
+      "f1": 0.6269035532994924,
+      "accuracy": 0.7469879518072289,
+      "auc": 0.7965738193851634,
+      "test_pairs": 1162,
+      "test_positive_rate": 0.30206540447504304,
+      "train_pairs": 3324,
+      "train_positive_rate": 0.3029482551143201
+    },
+    "ranking": [
+      {
+        "method": "Popularity baseline",
+        "precision@3": 0.10176531671858774,
+        "recall@3": 0.19870939029817533
+      },
+      {
+        "method": "Lowest own accuracy baseline",
+        "precision@3": 0.18691588785046725,
+        "recall@3": 0.3724113632992137
+      },
+      {
+        "method": "Logistic Regression (ours)",
+        "precision@3": 0.18795430944963654,
+        "recall@3": 0.36883251743064827
+      }
+    ],
+    "popularity_top": [
+      "Conversion of Fraction Decimals Percents",
+      "Equation Solving Two or Fewer Steps",
+      "Counting Methods"
+    ],
+    "coefficients": {
+      "attempts": -0.0228,
+      "smoothed_acc": -0.7017,
+      "recent_acc": -0.0432,
+      "since_last": -0.0516,
+      "overall_acc": -0.5319
+    }
+  }
+}
