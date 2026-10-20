@@ -16,8 +16,7 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics import (accuracy_score, confusion_matrix, f1_score, mean_absolute_error,
                              mean_squared_error, precision_recall_fscore_support, r2_score,
                              roc_auc_score)
-from sklearn.model_selection import (GroupShuffleSplit, KFold, StratifiedKFold,
-                                     cross_val_score)
+from sklearn.model_selection import KFold, StratifiedKFold, cross_val_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
@@ -126,18 +125,14 @@ def precision_recall_at_k(recs: dict, truth: dict, k=da.K):
 
 def module_b():
     if not da.ASSIST_CSV.exists():
-        return {"available": False, "reason": f"{da.ASSIST_CSV} not found"}
-    df, stats = da.load_assist()
-    df = da.split_history_next(df)
-    hist, nxt = df[df.is_history], df[~df.is_history]
-    feats = da.skill_features(hist)
-    labels = da.next_window_labels(nxt)
-
-    users = df.user_id.unique()
-    gss = GroupShuffleSplit(n_splits=1, test_size=0.25, random_state=RS)
-    tr_idx, te_idx = next(gss.split(users, groups=users))
-    tr_users, te_users = set(users[tr_idx]), set(users[te_idx])
-    assert not tr_users & te_users
+        if "--download" not in sys.argv:
+            return {"available": False, "reason": f"{da.ASSIST_CSV} not found "
+                    "(run `python src/train.py --download` to fetch it from the official link)"}
+        print(f"Downloading {da.ASSIST_DOWNLOAD_URL} ...")
+        da.download_assist()
+    t = da.build_tables()
+    stats, feats, labels = t["stats"], t["feats"], t["labels"]
+    tr_users, te_users, popularity = t["tr_users"], t["te_users"], t["popularity"]
 
     pairs = feats.merge(labels, on=["user_id", "skill_name"], how="left")
     lab = pairs[pairs.labelled.fillna(False).astype(bool)]
@@ -161,8 +156,6 @@ def module_b():
     weak = labels[labels.weak == 1]
     truth = {u: set(g.skill_name) for u, g in weak[weak.user_id.isin(te_users)].groupby("user_id")}
 
-    tr_weak = weak[weak.user_id.isin(tr_users)]
-    popularity = tr_weak.skill_name.value_counts()
     pop_top = popularity.index[:da.K].tolist()
 
     te_feats = feats[feats.user_id.isin(te_users)].copy()
@@ -187,10 +180,7 @@ def module_b():
     unseen = int((te_weak._merge == "left_only").sum())
 
     # Save test-learner attempts for the app (derived data: git-ignored)
-    da.DERIVED_DIR.mkdir(parents=True, exist_ok=True)
-    df[df.user_id.isin(te_users)].to_csv(da.DERIVED_DIR / "assist_test_attempts.csv.gz", index=False)
-    labels[labels.user_id.isin(te_users)].to_csv(da.DERIVED_DIR / "assist_test_labels.csv.gz", index=False)
-    popularity.rename("weak_count").to_csv(da.DERIVED_DIR / "assist_popularity.csv")
+    da.write_derived(t)
 
     return {"available": True, "cleaning": stats, "train_users": len(tr_users),
             "test_users": len(te_users), "test_users_with_weak": len(truth),

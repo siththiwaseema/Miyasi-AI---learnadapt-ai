@@ -42,8 +42,12 @@ It has two **independent** modules built on two public datasets:
 **B. ASSISTments 2009–2010 Skill Builder — corrected file**
 - <https://sites.google.com/site/assistmentsdata/home/2009-2010-assistment-data/skill-builder-data-2009-2010>
 - We use the **corrected** file (`skill_builder_data_corrected.csv`, 346,860 rows), because the
-  data page reports duplicated records in the original. **Not committed**: download it from the
-  page above and save it as `data/raw/skill_builder_data_corrected.csv`.
+  data page reports duplicated records in the original.
+- **Not committed, and neither is anything per-learner derived from it.** The
+  [ASSISTments Terms of Use](https://sites.google.com/site/assistmentsdata/termsofuseforusingdata)
+  say *"I agree to not give this data to anyone else."* Instead, the app and `train.py --download`
+  fetch the file from the official "corrected version" link on the data page. Only aggregate
+  metrics and the 5-coefficient model are committed.
 - Please cite the data page URL above and:
   Feng, M., Heffernan, N.T., & Koedinger, K.R. (2009). Addressing the assessment challenge in an
   online system that tutors as it assesses. *User Modeling and User-Adapted Interaction*, 19(3), 243–266.
@@ -61,15 +65,24 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate      macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 
-# Kaggle data is already in data/. For Module B, download the corrected ASSISTments file
-# (link above) to data/raw/skill_builder_data_corrected.csv
-
-python src/train.py        # trains everything, writes models/ and reports/results.md (~30 s)
-streamlit run app.py
+# Kaggle data is already in data/. --download fetches the corrected ASSISTments file (64 MB)
+# from the official link into data/raw/ if it is not there yet.
+python src/train.py --download   # trains everything, writes models/ and reports/results.md
+streamlit run app.py             # open http://localhost:8501
 ```
 
-If the ASSISTments file is missing, `train.py` still trains Module A, and the Module B tab tells
-you what to download.
+Without `--download` and without the ASSISTments file, `train.py` still trains Module A.
+
+## Deploying on Streamlit Community Cloud
+
+1. <https://share.streamlit.io> → **Create app** → repository
+   `siththiwaseema/Miyasi-AI---learnadapt-ai`, branch `main`, main file `app.py`;
+   Advanced settings → Python 3.12.
+2. The trained models and `reports/` are in the repo, so nothing is trained on the server.
+3. The first time someone opens the **Quiz-by-Quiz Gaps** tab, the app downloads the corrected
+   ASSISTments file from the official link and builds the test-learner tables (about a minute),
+   cached with `st.cache_resource`. Later visits are instant until the app restarts. If the
+   download fails, the tab shows the error, the other tabs keep working, and the next visit retries.
 
 ## Project structure
 
@@ -207,6 +220,7 @@ practised in history, so no history-based method can rank them.
   described as non-chronological.
 - Module B's model is roughly equal to the "lowest own accuracy" baseline.
 - All thresholds are our choices, not validated standards.
+- The hosted Module B depends on the official Google Drive link staying available.
 
 ## Stage 1 promises vs delivered
 

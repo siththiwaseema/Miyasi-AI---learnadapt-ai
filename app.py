@@ -45,16 +45,20 @@ def load_model(name):
     return joblib.load(p) if p.exists() else None
 
 
-@st.cache_data
+@st.cache_resource(show_spinner="First run: downloading the ASSISTments corrected file from the "
+                                "official link and building Module B tables (about a minute)...")
+def _build_assist_derived():
+    """ASSISTments data is not in git (its terms forbid redistribution), so on a fresh
+    deployment we fetch it from the official link once and build the test-learner tables."""
+    return da.ensure_derived(download=True)
+
+
 def load_assist_derived():
-    f = da.DERIVED_DIR
-    need = [f / "assist_test_attempts.csv.gz", f / "assist_test_labels.csv.gz", f / "assist_popularity.csv"]
-    if not all(p.exists() for p in need):
-        return None
-    att = pd.read_csv(need[0])
-    lab = pd.read_csv(need[1])
-    pop = pd.read_csv(need[2], index_col=0)["weak_count"]
-    return att, lab, pop
+    # Exceptions are not cached by st.cache_resource, so a failed download is retried next run.
+    try:
+        return _build_assist_derived(), None
+    except Exception as e:  # shown in the Module B tab instead of crashing the app
+        return None, f"{type(e).__name__}: {e}"
 
 
 res = load_results()
@@ -216,13 +220,20 @@ with tabs[1]:
 with tabs[2]:
     st.header("Quiz-by-Quiz Gaps — Module B (ASSISTments)")
     st.caption("Different learners from Module A. Only test learners (not used in training) are listed.")
-    derived = load_assist_derived()
     clf_b = load_model("assist_weak_logreg.joblib")
-    if derived is None or clf_b is None or not B.get("available"):
-        st.warning("Module B data not found. Download the corrected ASSISTments file into "
-                   "`data/raw/skill_builder_data_corrected.csv` and run `python src/train.py`.")
+    derived, err = load_assist_derived() if clf_b is not None and B.get("available") else (None, None)
+    if derived is None:
+        st.warning("Module B data is not available. The app tries to download the corrected "
+                   f"ASSISTments file from the [official link]({ASSIST_URL}) and build its tables; "
+                   "locally you can also save it as `data/raw/skill_builder_data_corrected.csv` "
+                   "and run `python src/train.py`.")
+        if err:
+            st.code(err)
     else:
         att, lab, pop = derived
+        if att.user_id.nunique() != B["test_users"]:
+            st.warning(f"Built {att.user_id.nunique()} test learners but training reported "
+                       f"{B['test_users']}; the downloaded file may differ from the one used to train.")
         uid = st.selectbox("Test learner (user_id)", sorted(att.user_id.unique()), key="b_uid")
         ua = att[att.user_id == uid]
         hist = ua[ua.is_history][["user_id", "skill_name", "correct"]]
