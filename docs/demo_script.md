@@ -8,7 +8,8 @@ load downloads the quiz data ("Loading quiz data, this takes about a minute the 
 - "Learners move at different speeds, but courses give everyone the same sequence. LearnAdapt AI
   shows each learner what they're good at, what to grow next and what to practise — always with a
   simple reason."
-- Point at the three choices: **I'm a Student**, **I'm a Teacher**, **For Judges & Evaluators**.
+- Point at the two choices, **I'm a Student** and **I'm a Teacher** (also the buttons at the
+  top), and mention the technical view is in the sidebar: **🛠 Developer insight**.
 - Read the note: profiles and quiz histories come from two different public datasets about
   different learners, so they're shown separately.
 
@@ -22,7 +23,9 @@ load downloads the quiz data ("Loading quiz data, this takes about a minute the 
   - Areas to grow: orange badges **Modules completed** and **Engagement**.
   - Tips (Visual learner): "Set a weekly module target with small milestones; use diagrams, mind
     maps and colour-coded notes" and "Shorter, more interactive sessions to lift engagement; …".
-  - "Which learning path suits you? Our tool can't tell this reliably yet" — we don't pretend.
+  - "Suggested learning path: **M1→M2→M4** — both paths are predicted to give almost the same
+    final score, so this is only a small lean." Be honest if asked: the score model is linear, so
+    it suggests this same path for all 200 test learners, 0.031 points ahead.
 - **Topics to practise next**: type quiz ID **70733** and press Enter: 453 questions, 74% right.
   - Priority 1 · Solving for a variable — 65% chance this topic needs more practice —
     "You got 1 of 5 right so far · recent accuracy 20% · last practised 90 questions ago".
@@ -55,7 +58,8 @@ load downloads the quiz data ("Loading quiz data, this takes about a minute the 
 - **Try changes (what-if)**: raise Engagement or Modules completed and compare the Before/After
   columns.
 
-## 3:15–4:30 · ⚖️ Judges & Evaluators
+## 3:15–4:30 · 🛠 Developer insight (sidebar)
+- Open the sidebar (› at the top left) → **Open developer insight**.
 - **Model Evaluation**:
   - Outcome classification: Dummy (stratified) macro-F1 0.214; Logistic Regression 0.211;
     Random Forest 0.265 on test, but CV macro-F1 0.227 / 0.229 / 0.228 → no clear win over baselines.

@@ -1,0 +1,13 @@
+# LearnAdapt AI — light colour theme (also used by Streamlit Community Cloud)
+[theme]
+base = "light"
+primaryColor = "#0F766E"              # calm teal: buttons, selected view, sliders
+backgroundColor = "#F8FAFC"           # soft off-white page
+secondaryBackgroundColor = "#E6F4F1"  # light teal: inputs, expanders, table headers
+textColor = "#1E293B"                 # dark slate, easy to read
+linkColor = "#0F766E"
+borderColor = "#CBD5E1"
+showWidgetBorder = true
+baseRadius = "large"                  # rounder cards and buttons
+baseFontSize = 18                     # a little bigger than the 16px default
+chartCategoricalColors = ["#0F766E", "#F59E0B", "#6366F1", "#EF4444", "#0EA5E9", "#84CC16"]

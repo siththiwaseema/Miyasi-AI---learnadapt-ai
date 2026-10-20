@@ -1,6 +1,6 @@
 """LearnAdapt AI — Personalised Learning Path Prediction (Team මියැසිAI).
 
-Views: Home, Student, Teacher (plain language) and Judges & Evaluators (technical).
+Views: Home, Student, Teacher (plain language) and Developer insight (technical, in the sidebar).
 
 Run:  streamlit run app.py   (after: python src/train.py)
 """
@@ -25,7 +25,8 @@ KAGGLE_URL = "https://www.kaggle.com/datasets/ziya07/ai-powered-personalized-lea
 ASSIST_URL = ("https://sites.google.com/site/assistmentsdata/home/"
               "2009-2010-assistment-data/skill-builder-data-2009-2010")
 
-st.set_page_config(page_title="LearnAdapt AI", page_icon="🎓", layout="wide")
+st.set_page_config(page_title="LearnAdapt AI", page_icon="🎓", layout="wide",
+                   initial_sidebar_state="collapsed")
 
 
 # --------------------------------------------------------------------------- loaders
@@ -287,7 +288,7 @@ def evaluator_expander(uid, feats, top, lab, pop):
             + ("; ".join(f"{s} ({a:.0%} of {n})" for s, a, n in
                          zip(real.skill_name, real.next_acc, real.next_attempts)) or "none")
             + f"  \n**Our top 3 matched {hits} of these.** Overall results are in the "
-              "Judges & Evaluators view.")
+              "🛠 Developer insight (in the sidebar).")
 
 
 def reliability_note():
@@ -301,6 +302,7 @@ def reliability_note():
 # --------------------------------------------------------------------------- home
 def go(view: str):
     st.session_state["view"] = view
+    st.session_state["nav"] = view
 
 
 def home_view():
@@ -308,7 +310,7 @@ def home_view():
     st.write("LearnAdapt AI looks at how a learner has been doing and suggests what to focus on "
              "next — always with a simple reason.")
     how_to("choose who you are below. You can switch at any time with the buttons at the top.")
-    c1, c2, c3 = st.columns(3)
+    c1, c2 = st.columns(2)
     with c1:
         with st.container(border=True):
             st.markdown("### 🎒 I'm a Student")
@@ -322,15 +324,9 @@ def home_view():
                      "support ideas.")
             st.button("Start as a teacher", key="go_teacher", on_click=go, args=("Teacher",),
                       type="primary", width="stretch")
-    with c3:
-        with st.container(border=True):
-            st.markdown("### ⚖️ For Judges & Evaluators")
-            st.write("Full methods, model results, comparisons, data insights, responsible AI "
-                     "and limitations.")
-            st.button("Open evaluator view", key="go_judges", on_click=go,
-                      args=("Judges & Evaluators",), width="stretch")
     st.caption("The learner profiles and the quiz histories come from two different public "
                "datasets about different learners, so they are shown separately.")
+    st.caption("Looking for model details? Open the sidebar (› at the top left) → 🛠 Developer insight.")
 
 
 # --------------------------------------------------------------------------- student
@@ -368,9 +364,15 @@ def student_profile(row):
             st.markdown(f"- **{name}:** {text}")
     else:
         st.markdown("- You're doing well across the board — keep up your current routine!")
-    if not A["path_reliable"]:
-        st.markdown("**🧭 Which learning path suits you?** Our tool can't tell this reliably "
-                    "yet, so have a chat with your teacher about it.")
+    ps = path_scores(row)
+    best = ps.loc[ps["predicted final score"].idxmax(), "path"]
+    with st.container(border=True):
+        st.markdown(f"**🧭 Suggested learning path:** :blue-badge[{best}]")
+        if A["path_reliable"]:
+            st.caption("Learners like you are predicted to get a higher final score on this path.")
+        else:
+            st.caption("Both paths lead to about the same predicted score for you, so either is a good choice."
+			"Pick the one that suits you, and talk it over with your teacher.")
 
 
 def student_topics(att, pop, clf_b, uid):
@@ -477,8 +479,9 @@ def teacher_view():
                    "about as good as random guessing on this data.")
 
 
-# --------------------------------------------------------------------------- judges & evaluators
-def judges_view():
+# --------------------------------------------------------------------------- developer insight
+def developer_view():
+    st.subheader("🛠 Developer insight")
     st.caption("Technical view: methods, metrics and baselines exactly as computed by `src/train.py`.")
     tabs = st.tabs(["Overview", "Learner Profile & Path (A)", "Quiz-by-Quiz Gaps (B)",
                     "What-if (A)", "Model Evaluation", "Data Insights", "Responsible AI & Limitations"])
@@ -780,13 +783,37 @@ def judges_view():
 
 
 # --------------------------------------------------------------------------- page
-VIEWS = {"Home": "🏠 Home", "Student": "🎒 Student", "Teacher": "🧑‍🏫 Teacher",
-         "Judges & Evaluators": "⚖️ Judges & Evaluators"}
+TOP_VIEWS = {"Home": "🏠 Home", "Student": "🎒 Student", "Teacher": "🧑‍🏫 Teacher"}
+DEV_VIEW = "Developer insight"   # technical view, reached from the sidebar only
+
+
+def on_top_nav():
+    picked = st.session_state["nav"]
+    if picked is None:  # clicking the selected button again: keep the current view
+        if st.session_state["view"] in TOP_VIEWS:
+            st.session_state["nav"] = st.session_state["view"]
+    else:
+        st.session_state["view"] = picked
+
+
+def open_dev():
+    st.session_state["view"] = DEV_VIEW
+    st.session_state["nav"] = None
+
+
+st.session_state.setdefault("view", "Home")
+st.session_state.setdefault("nav", st.session_state["view"] if st.session_state["view"] in TOP_VIEWS else None)
+
+with st.sidebar:
+    st.markdown("### 🛠 Developer insight")
+    st.caption("Methods, model results, simple comparison methods, data insights, responsible AI "
+               "and limitations.")
+    st.button("Open developer insight", key="go_dev", on_click=open_dev, width="stretch")
+
 st.title("🎓 LearnAdapt AI")
 st.caption("Personalised learning suggestions · AI Innovation Hackathon 2026 · Team මියැසිAI "
            "(Siththi Waseema, Shazany Harid)")
-st.session_state.setdefault("view", "Home")
-view = st.segmented_control("Choose a view", list(VIEWS), format_func=VIEWS.get, key="view",
-                            label_visibility="collapsed") or "Home"
+st.segmented_control("Choose a view", list(TOP_VIEWS), format_func=TOP_VIEWS.get, key="nav",
+                     on_change=on_top_nav, label_visibility="collapsed")
 {"Home": home_view, "Student": student_view, "Teacher": teacher_view,
- "Judges & Evaluators": judges_view}[view]()
+ DEV_VIEW: developer_view}.get(st.session_state["view"], home_view)()

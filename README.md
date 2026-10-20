@@ -17,7 +17,9 @@ It has two **independent** modules built on two public datasets:
 
 ## Features
 
-The app opens on a **Home** page with three choices:
+The app has a light theme with slightly larger text (`.streamlit/config.toml`). It opens on a
+**Home** page with two choices, which are also the buttons at the top (Home, Student, Teacher). The
+technical view is tucked away in the sidebar:
 
 - **🎒 I'm a Student** — students type their own learner ID and quiz ID (there is no list of
   other learners to browse). Plain language, no metrics: green badges for strengths, orange for areas
@@ -29,7 +31,8 @@ The app opens on a **Home** page with three choices:
   warning, the factors behind the guess, quiz-topic cards with a history table, and a what-if tool.
   An expander "For evaluators: how good was this prediction?" holds the simple comparison methods
   and what actually happened in the learner's later attempts.
-- **⚖️ For Judges & Evaluators** — the full technical view, with these tabs:
+- **🛠 Developer insight** (open the sidebar, › at the top left) — the full technical view for
+  judges and developers, with these tabs:
 
 Every page has a short "How to use this page" box, and student/teacher pages carry the note
 "These are suggestions to discuss with your teacher, not a judgement."
