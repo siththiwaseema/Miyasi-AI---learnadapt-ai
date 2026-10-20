@@ -15,13 +15,15 @@ load downloads the quiz data ("Loading quiz data, this takes about a minute the 
 ## 0:30–1:45 · 🎒 Student
 - Click **Start as a student**. Point at the note: "These are suggestions to discuss with your
   teacher, not a judgement."
-- **My strengths & tips**, learner **STU935** (pre-selected):
+- Students can't browse a list of learners — they type their own ID. Show that a wrong ID gives
+  "We couldn't find that ID. Please check it, or ask your teacher."
+- **My strengths & tips**: type **STU935** and press Enter:
   - Strength: green badge **Previous GPA**.
   - Areas to grow: orange badges **Modules completed** and **Engagement**.
   - Tips (Visual learner): "Set a weekly module target with small milestones; use diagrams, mind
     maps and colour-coded notes" and "Shorter, more interactive sessions to lift engagement; …".
   - "Which learning path suits you? Our tool can't tell this reliably yet" — we don't pretend.
-- **Topics to practise next**, quiz ID **70733** (pre-selected): 453 questions, 74% right.
+- **Topics to practise next**: type quiz ID **70733** and press Enter: 453 questions, 74% right.
   - Priority 1 · Solving for a variable — 65% chance this topic needs more practice —
     "You got 1 of 5 right so far · recent accuracy 20% · last practised 90 questions ago".
   - Priority 2 · Translations — 62%. Priority 3 · Write Linear Equation from Graph — 62%.
@@ -32,6 +34,7 @@ load downloads the quiz data ("Loading quiz data, this takes about a minute the 
 
 ## 1:45–3:15 · 🧑‍🏫 Teacher
 - Switch to **Teacher** at the top.
+- Teachers pick from a list of learners (STU935 is pre-selected for the demo).
 - **Learner summary**, STU935 (UG, learns best: Visual):
   - Strength: Previous GPA — higher than about 76% of learners.
   - Areas to grow: Modules completed — about 6%; Engagement — about 22%.

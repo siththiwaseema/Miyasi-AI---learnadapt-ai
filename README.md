@@ -19,7 +19,8 @@ It has two **independent** modules built on two public datasets:
 
 The app opens on a **Home** page with three choices:
 
-- **🎒 I'm a Student** — plain language, no metrics: green badges for strengths, orange for areas
+- **🎒 I'm a Student** — students type their own learner ID and quiz ID (there is no list of
+  other learners to browse). Plain language, no metrics: green badges for strengths, orange for areas
   to grow, tips matched to learning style, and the top 3 topics to practise next as priority cards
   (e.g. "65% chance this topic needs more practice — You got 1 of 5 right so far · recent accuracy
   20% · last practised 90 questions ago"). Students can add new results and the list updates.

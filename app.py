@@ -158,6 +158,26 @@ def pick_learner_a(key: str, label: str):
     return kdf.set_index(dk.ID).loc[sid]
 
 
+def enter_own_id(label: str, key: str, valid_ids, demo, as_int: bool):
+    """Students type their own ID (no list of other learners). Returns the ID or None."""
+    typed = st.text_input(label, key=key, placeholder=f"e.g. {demo}",
+                          help=f"Type your own ID. For the demo, try {demo}.").strip()
+    if not typed:
+        st.caption("Type your ID above and press Enter to see your results.")
+        return None
+    if as_int:
+        if not typed.isdigit():
+            st.warning("Your ID should be a number. Please check it and try again.")
+            return None
+        found = int(typed)
+    else:
+        found = typed.upper()
+    if found not in set(valid_ids):
+        st.warning("We couldn't find that ID. Please check it, or ask your teacher.")
+        return None
+    return found
+
+
 def strength_gap_badges(prof: pd.DataFrame, with_numbers: bool):
     strengths = prof[prof.status == "Strength"]
     gaps = prof[prof.status == "Gap"]
@@ -319,37 +339,47 @@ def student_view():
     st.caption(NOT_A_JUDGEMENT)
     t1, t2 = st.tabs(["🌟 My strengths & tips", "📝 Topics to practise next"])
     with t1:
-        how_to("choose your learner ID. You'll see what you're doing well, what to grow next and "
+        how_to("type your learner ID. You'll see what you're doing well, what to grow next and "
                "tips that match your learning style.")
-        row = pick_learner_a("s_sid", "Your learner ID")
-        prof = dk.percentile_profile(kdf, row)
-        with st.container(border=True):
-            strength_gap_badges(prof, with_numbers=False)
-        st.markdown(f"**💡 Tips for you** (you learn best the *{row['learning_style']}* way)")
-        acts = dk.support_actions(prof, row["learning_style"])
-        if acts:
-            for a in acts:
-                name, text = split_action(a)
-                st.markdown(f"- **{name}:** {text}")
-        else:
-            st.markdown("- You're doing well across the board — keep up your current routine!")
-        if not A["path_reliable"]:
-            st.markdown("**🧭 Which learning path suits you?** Our tool can't tell this reliably "
-                        "yet, so have a chat with your teacher about it.")
+        sid = enter_own_id("Your learner ID", "s_sid", A["test_ids"], DEMO_A, as_int=False)
+        if sid is not None:
+            student_profile(kdf.set_index(dk.ID).loc[sid])
     with t2:
-        how_to("choose your quiz ID. You'll see the 3 topics most worth practising next and why. "
+        how_to("type your quiz ID. You'll see the 3 topics most worth practising next and why. "
                "Practised something? Add your results at the bottom and the list updates.")
         data = module_b_data(friendly=True)
         if data is None:
             return
         att, lab, pop, clf_b = data
-        uid = pick_learner_b(att, "s_uid", "Your quiz ID")
-        _, hist, feats, scores, top, _ = learner_b(att, clf_b, uid)
-        st.markdown(f"You've answered **{len(hist)}** questions so far and got "
-                    f"**{hist.correct.mean():.0%}** right. Here's where to focus next:")
-        topic_cards(top, you=True)
-        st.caption("Practising these a little each day usually helps more than one long session.")
-        add_results(uid, feats, pop, "s", you=True)
+        uid = enter_own_id("Your quiz ID", "s_uid", att.user_id.unique(), DEMO_B, as_int=True)
+        if uid is not None:
+            student_topics(att, pop, clf_b, uid)
+
+
+def student_profile(row):
+    prof = dk.percentile_profile(kdf, row)
+    with st.container(border=True):
+        strength_gap_badges(prof, with_numbers=False)
+    st.markdown(f"**💡 Tips for you** (you learn best the *{row['learning_style']}* way)")
+    acts = dk.support_actions(prof, row["learning_style"])
+    if acts:
+        for a in acts:
+            name, text = split_action(a)
+            st.markdown(f"- **{name}:** {text}")
+    else:
+        st.markdown("- You're doing well across the board — keep up your current routine!")
+    if not A["path_reliable"]:
+        st.markdown("**🧭 Which learning path suits you?** Our tool can't tell this reliably "
+                    "yet, so have a chat with your teacher about it.")
+
+
+def student_topics(att, pop, clf_b, uid):
+    _, hist, feats, scores, top, _ = learner_b(att, clf_b, uid)
+    st.markdown(f"You've answered **{len(hist)}** questions so far and got "
+                f"**{hist.correct.mean():.0%}** right. Here's where to focus next:")
+    topic_cards(top, you=True)
+    st.caption("Practising these a little each day usually helps more than one long session.")
+    add_results(uid, feats, pop, "s", you=True)
 
 
 # --------------------------------------------------------------------------- teacher
