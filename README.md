@@ -15,7 +15,23 @@ It has two **independent** modules built on two public datasets:
 
 > **The two datasets describe different learners.** They are never joined or merged by ID.
 
-## Features (Streamlit tabs)
+## Features
+
+The app opens on a **Home** page with three choices:
+
+- **🎒 I'm a Student** — plain language, no metrics: green badges for strengths, orange for areas
+  to grow, tips matched to learning style, and the top 3 topics to practise next as priority cards
+  (e.g. "65% chance this topic needs more practice — You got 1 of 5 right so far · recent accuracy
+  20% · last practised 90 questions ago"). Students can add new results and the list updates.
+- **🧑‍🏫 I'm a Teacher** — pick a learner for a summary card (strengths, gaps, rule-based support
+  ideas), the model's guess with a plain warning, the path check with the **LOW RELIABILITY**
+  warning, the factors behind the guess, quiz-topic cards with a history table, and a what-if tool.
+  An expander "For evaluators: how good was this prediction?" holds the simple comparison methods
+  and what actually happened in the learner's later attempts.
+- **⚖️ For Judges & Evaluators** — the full technical view, with these tabs:
+
+Every page has a short "How to use this page" box, and student/teacher pages carry the note
+"These are suggestions to discuss with your teacher, not a judgement."
 
 1. **Overview** — problem, solution, how it works, both datasets (source, licence, rows used).
 2. **Learner Profile & Path (A)** — pick a *test* learner: profile, percentile strengths and gaps,
